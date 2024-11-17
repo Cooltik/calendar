@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const workdays = await fetchWorkdays();
 
   // Обновляем счетчик отработанных дней
-  updateWorkdayCounter(workdays.length);
+  updateWorkDayCounter(workdays.length);
 
   // Определяем первый день месяца и количество дней в месяце
   const firstDayOfMonth = getDay(monthStart); // День недели для 1 числа месяца
@@ -266,9 +266,10 @@ async function toggleWorkday(date, dayElement) {
 }
 
 // Функция для обновления счетчика отработанных дней
-function updateWorkdayCounter(change) {
+function updateWorkDayCounter(change) {
   const workdayCounterEl = document.getElementById("workday-counter");
   let currentCount = parseInt(workdayCounterEl.textContent) || 0;
   currentCount += change;
-  workdayCounterEl.textContent = currentCount;
+  // workdayCounterEl.textContent = currentCount;
+  workdayCounterEl.textContent = `Отработано: ${currentCount} дней`;
 }
