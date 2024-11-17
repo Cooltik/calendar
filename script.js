@@ -149,6 +149,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const monthNameEl = document.getElementById("month-name");
   const weekdaysEl = document.getElementById("weekdays");
   const workdayCounterEl = document.getElementById("workday-counter"); // Элемент для отображения счетчика отработанных дней
+  const earnedMoneyEl = document.getElementById("earned-money"); // Элемент для отображения заработанных денег
 
   const today = new Date();
   const currentMonth = today.getMonth();
@@ -169,8 +170,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Получаем отработанные дни из базы данных
   const workdays = await fetchWorkdays();
 
-  // Обновляем счетчик отработанных дней
-  updateWorkDayCounter(workdays.length);
+  // Обновляем счетчик отработанных дней и заработанных денег
+  updateWorkdayCounter(workdays.length);
 
   // Определяем первый день месяца и количество дней в месяце
   const firstDayOfMonth = getDay(monthStart); // День недели для 1 числа месяца
@@ -265,11 +266,16 @@ async function toggleWorkday(date, dayElement) {
   }
 }
 
-// Функция для обновления счетчика отработанных дней
-function updateWorkDayCounter(change) {
+// Функция для обновления счетчика отработанных дней и заработанных денег
+function updateWorkdayCounter(change) {
   const workdayCounterEl = document.getElementById("workday-counter");
+  const earnedMoneyEl = document.getElementById("earned-money");
+
   let currentCount = parseInt(workdayCounterEl.textContent) || 0;
   currentCount += change;
-  // workdayCounterEl.textContent = currentCount;
-  workdayCounterEl.textContent = `Отработано: ${currentCount} дней`;
+  workdayCounterEl.textContent = currentCount;
+
+  // Обновляем заработанные деньги
+  const earnings = currentCount * 300;
+  earnedMoneyEl.textContent = earnings;
 }

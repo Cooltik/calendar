@@ -115,3 +115,40 @@ body {
     }
   }
   
+  #workday-counter-container {
+    font-size: 16px;
+    margin: 20px 0;
+  }
+  
+  #workday-text {
+    font-weight: bold;
+  }
+  
+  #workday-counter {
+    color: green;
+    font-size: 20px;
+  }
+
+  #workday-counter-container {
+    font-size: 16px;
+    margin: 20px 0;
+  }
+  
+  #workday-text {
+    font-weight: bold;
+  }
+  
+  #workday-counter {
+    color: green;
+    font-size: 20px;
+  }
+  
+  #earned-money-text {
+    font-weight: bold;
+  }
+  
+  #earned-money {
+    color: blue;
+    font-size: 20px;
+  }
+  
