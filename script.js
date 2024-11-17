@@ -85,7 +85,9 @@ async function fetchWorkdays() {
 
 // Функция для отметки дня
 async function toggleWorkday(date, dayElement) {
-  const formattedDate = date.toISOString().split("T")[0];
+  // const formattedDate = date.toISOString().split("T")[0];
+  const formattedDate = new Date().toISOString().split('T')[0]; // Например: '2024-11-15'
+
 
   if (dayElement.classList.contains("highlight")) {
     // Удаление отработанного дня из базы данных

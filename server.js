@@ -20,6 +20,7 @@ const workdaySchema = new mongoose.Schema({
   userId: { type: String, required: true }
 });
 
+
 const Workday = mongoose.model("Workday", workdaySchema);
 
 // Маршрут для добавления отработанного дня
