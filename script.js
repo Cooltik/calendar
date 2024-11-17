@@ -148,6 +148,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const calendar = document.getElementById("calendar");
   const monthNameEl = document.getElementById("month-name");
   const weekdaysEl = document.getElementById("weekdays");
+  const workdayCounterEl = document.getElementById("workday-counter"); // Элемент для отображения счетчика отработанных дней
 
   const today = new Date();
   const currentMonth = today.getMonth();
@@ -167,6 +168,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Получаем отработанные дни из базы данных
   const workdays = await fetchWorkdays();
+
+  // Обновляем счетчик отработанных дней
+  updateWorkdayCounter(workdays.length);
 
   // Определяем первый день месяца и количество дней в месяце
   const firstDayOfMonth = getDay(monthStart); // День недели для 1 числа месяца
@@ -232,6 +236,7 @@ async function toggleWorkday(date, dayElement) {
       });
       if (response.ok) {
         dayElement.classList.remove("highlight");
+        updateWorkdayCounter(-1); // Уменьшаем счетчик
       } else {
         console.error("Error removing workday:", await response.json());
       }
@@ -250,6 +255,7 @@ async function toggleWorkday(date, dayElement) {
       });
       if (response.ok) {
         dayElement.classList.add("highlight");
+        updateWorkdayCounter(1); // Увеличиваем счетчик
       } else {
         console.error("Error adding workday:", await response.json());
       }
@@ -257,4 +263,12 @@ async function toggleWorkday(date, dayElement) {
       console.error("Error adding workday:", error);
     }
   }
+}
+
+// Функция для обновления счетчика отработанных дней
+function updateWorkdayCounter(change) {
+  const workdayCounterEl = document.getElementById("workday-counter");
+  let currentCount = parseInt(workdayCounterEl.textContent) || 0;
+  currentCount += change;
+  workdayCounterEl.textContent = currentCount;
 }
