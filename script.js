@@ -1,5 +1,4 @@
 const userId = "123"; // Уникальный идентификатор пользователя
-const API_URL = 'http://localhost:5000';
 
 // Месяцы на русском языке
 const monthNames = [
