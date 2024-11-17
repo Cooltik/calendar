@@ -60,7 +60,7 @@ app.delete('/workday', async (req, res) => {
   });
   
 
-// // Запуск сервера
-// app.listen(PORT, () => {
-//   console.log(`Server running on http://localhost:${PORT}`);
-// });
+// Запуск сервера
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
