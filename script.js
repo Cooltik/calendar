@@ -129,7 +129,7 @@
 
 
 
-// Импорт функций из date-fns
+// Использование date-fns через глобальный объект
 const { format, parseISO, isWeekend, getDay, startOfMonth, endOfMonth } = dateFns;
 
 const userId = "123"; // Уникальный идентификатор пользователя
