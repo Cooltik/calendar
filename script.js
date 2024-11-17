@@ -1,4 +1,6 @@
 const userId = "123"; // Уникальный идентификатор пользователя
+const API_URL = 'https://calendar-ufnf.onrender.com/';
+
 
 // Месяцы на русском языке
 const monthNames = [
