@@ -347,23 +347,32 @@ document.addEventListener("DOMContentLoaded", async () => {
     const formattedDate = format(date, "yyyy-MM-dd");
     const dayElement = document.createElement("div");
     dayElement.classList.add("day");
-    dayElement.textContent = day;
+
+    // Верхний элемент - день месяца
+    const dateEl = document.createElement("div");
+    dateEl.classList.add("date");
+    dateEl.textContent = day;
+
+    // Нижний элемент - значение (по умолчанию пустое)
+    const valueEl = document.createElement("div");
+    valueEl.classList.add("value");
+
+    const existingWorkday = workdays.find(w => w.date === formattedDate);
+    if (existingWorkday) {
+      dayElement.classList.add("highlight");
+      valueEl.textContent = existingWorkday.value || "";
+    }
 
     // Подсветка выходных дней (суббота и воскресенье)
     if (isWeekend(date)) {
       dayElement.classList.add("weekend");
     }
 
-    // Подсветка отработанных дней
-    const existingWorkday = workdays.find(w => w.date === formattedDate);
-    if (existingWorkday) {
-      dayElement.classList.add("highlight");
-      if (existingWorkday.value) {
-        dayElement.textContent = existingWorkday.value;
-      }
-    }
+    dayElement.appendChild(dateEl);
+    dayElement.appendChild(valueEl);
 
-    dayElement.addEventListener("pointerdown", () => openInputDialog(date, dayElement));
+    // Добавляем обработчик события для открытия окна ввода
+    dayElement.addEventListener("pointerdown", () => openInputDialog(date, dayElement, valueEl));
 
     calendar.appendChild(dayElement);
   }
@@ -385,7 +394,7 @@ async function fetchWorkdays() {
 }
 
 // Функция для отображения окна ввода значения
-function openInputDialog(date, dayElement) {
+function openInputDialog(date, dayElement, valueElement) {
   const formattedDate = format(date, "yyyy-MM-dd");
 
   // Создаём окно ввода
@@ -395,7 +404,7 @@ function openInputDialog(date, dayElement) {
   const inputField = document.createElement("input");
   inputField.type = "number";
   inputField.placeholder = "Введите значение";
-  inputField.value = dayElement.textContent !== date.getDate().toString() ? dayElement.textContent : "";
+  inputField.value = valueElement.textContent || "";
 
   const saveButton = document.createElement("button");
   saveButton.textContent = "Сохранить";
@@ -414,9 +423,9 @@ function openInputDialog(date, dayElement) {
       });
       if (response.ok) {
         dayElement.classList.add("highlight");
-        dayElement.textContent = value || date.getDate();
+        valueElement.textContent = value || "";
         document.body.removeChild(inputDialog);
-        updateWorkdayCounter(1); // Увеличиваем счетчик, если день не был отработан ранее
+        updateWorkdayCounter(1); // Увеличиваем счётчик, если день ранее не был отмечен
       } else {
         console.error("Error saving workday:", await response.json());
       }
