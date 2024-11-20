@@ -279,3 +279,9 @@ function updateWorkdayCounter(change) {
   const earnings = currentCount * 300;
   earnedMoneyEl.textContent = earnings;
 }
+
+
+// Автоматическое обновление страницы каждые 5 минут
+setInterval(() => {
+  location.reload(); // Перезагружает текущую страницу
+}, 5 * 60 * 1000); // 5 минут в миллисекундах
