@@ -409,10 +409,18 @@ function openInputDialog(date, dayElement, valueElement) {
   const saveButton = document.createElement("button");
   saveButton.textContent = "Сохранить";
 
+  const deleteButton = document.createElement("button");
+  deleteButton.textContent = "Удалить";
+  deleteButton.style.backgroundColor = "red";
+  deleteButton.style.color = "white";
+
+  const cancelButton = document.createElement("button");
+  cancelButton.textContent = "Отмена";
+
+  // Обработчик для сохранения данных
   saveButton.addEventListener("click", async () => {
     const value = parseInt(inputField.value, 10) || 0;
 
-    // Сохраняем данные в базу
     try {
       const response = await fetch(`${API_URL}/workday`, {
         method: "POST",
@@ -434,14 +442,37 @@ function openInputDialog(date, dayElement, valueElement) {
     }
   });
 
-  const cancelButton = document.createElement("button");
-  cancelButton.textContent = "Отмена";
+  // Обработчик для удаления данных
+  deleteButton.addEventListener("click", async () => {
+    try {
+      const response = await fetch(`${API_URL}/workday`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ date: formattedDate, userId }),
+      });
+      if (response.ok) {
+        dayElement.classList.remove("highlight");
+        valueElement.textContent = "";
+        document.body.removeChild(inputDialog);
+        updateWorkdayCounter(-1); // Уменьшаем счётчик
+      } else {
+        console.error("Error deleting workday:", await response.json());
+      }
+    } catch (error) {
+      console.error("Error deleting workday:", error);
+    }
+  });
+
+  // Обработчик для отмены ввода
   cancelButton.addEventListener("click", () => {
     document.body.removeChild(inputDialog);
   });
 
   inputDialog.appendChild(inputField);
   inputDialog.appendChild(saveButton);
+  inputDialog.appendChild(deleteButton);
   inputDialog.appendChild(cancelButton);
 
   document.body.appendChild(inputDialog);
