@@ -203,7 +203,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       dayElement.classList.add("highlight");
     }
 
-    dayElement.addEventListener("click", () => toggleWorkday(date, dayElement));
+    dayElement.addEventListener("pointerdown", () => toggleWorkday(date, dayElement));
 
     calendar.appendChild(dayElement);
   }

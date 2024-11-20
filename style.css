@@ -19,7 +19,7 @@ body {
   
   /* Стили для блока календаря */
   #calendar-container {
-    width: 100%;
+    width: auto;
     max-width: 500px;
     background-color: #ffffff;
     border-radius: 8px;
