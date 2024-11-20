@@ -152,6 +152,15 @@ body {
     color: blue;
     font-size: 20px;
   }
+
+  #value-text {
+    font-weight: bold;
+  }
+  
+  #value-total {
+    color: blue;
+    font-size: 20px;
+  }
   
   .popup {
     position: fixed;
