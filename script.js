@@ -302,6 +302,9 @@ const monthNames = [
 // Дни недели на русском языке с субботой и воскресеньем в конце
 const dayNames = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 
+// Переменная для отслеживания активного диалогового окна
+let activeDialog = null;
+
 document.addEventListener("DOMContentLoaded", async () => {
   const calendar = document.getElementById("calendar");
   const monthNameEl = document.getElementById("month-name");
@@ -397,6 +400,11 @@ async function fetchWorkdays() {
 function openInputDialog(date, dayElement, valueElement) {
   const formattedDate = format(date, "yyyy-MM-dd");
 
+  // Если окно уже открыто, закрываем его
+  if (activeDialog) {
+    document.body.removeChild(activeDialog);
+  }
+
   // Создаём окно ввода
   const inputDialog = document.createElement("div");
   inputDialog.classList.add("input-dialog");
@@ -433,6 +441,7 @@ function openInputDialog(date, dayElement, valueElement) {
         dayElement.classList.add("highlight");
         valueElement.textContent = value || "";
         document.body.removeChild(inputDialog);
+        activeDialog = null; // Убираем активное окно
         updateWorkdayCounter(1); // Увеличиваем счётчик, если день ранее не был отмечен
       } else {
         console.error("Error saving workday:", await response.json());
@@ -456,6 +465,7 @@ function openInputDialog(date, dayElement, valueElement) {
         dayElement.classList.remove("highlight");
         valueElement.textContent = "";
         document.body.removeChild(inputDialog);
+        activeDialog = null; // Убираем активное окно
         updateWorkdayCounter(-1); // Уменьшаем счётчик
       } else {
         console.error("Error deleting workday:", await response.json());
@@ -468,6 +478,7 @@ function openInputDialog(date, dayElement, valueElement) {
   // Обработчик для отмены ввода
   cancelButton.addEventListener("click", () => {
     document.body.removeChild(inputDialog);
+    activeDialog = null; // Убираем активное окно
   });
 
   inputDialog.appendChild(inputField);
@@ -476,6 +487,7 @@ function openInputDialog(date, dayElement, valueElement) {
   inputDialog.appendChild(cancelButton);
 
   document.body.appendChild(inputDialog);
+  activeDialog = inputDialog; // Устанавливаем текущее активное окно
 }
 
 // Функция для обновления счетчика отработанных дней и заработанных денег
