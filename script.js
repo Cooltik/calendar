@@ -532,8 +532,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const calendar = document.getElementById("calendar");
   const monthNameEl = document.getElementById("month-name");
   const weekdaysEl = document.getElementById("weekdays");
-  const totalWorkdaysEl = document.getElementById("total-workdays"); // Блок для общего количества отработанных дней
-  const totalValueEl = document.getElementById("total-value"); // Блок для общего значения (value)
+  const totalValueEl = document.getElementById("value-total"); // Блок для общего количества value
 
   const today = new Date();
   const currentMonth = today.getMonth();
@@ -554,12 +553,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Получаем отработанные дни из базы данных
   const workdays = await fetchWorkdays();
 
-  // Обновляем счетчик отработанных дней и заработанных денег
+  // Обновляем счетчик отработанных дней и общую сумму значений
   updateWorkdayCounter(workdays.length);
-  updateTotalValue(workdays);
-
-  // Обновляем общее количество отработанных дней
-  totalWorkdaysEl.textContent = `Общее количество отработанных дней: ${workdays.length} шт.`; // Выводим общее количество
+  updateTotalValue(workdays); // Обновление общего значения
 
   // Определяем первый день месяца и количество дней в месяце
   const firstDayOfMonth = getDay(monthStart); // День недели для 1 числа месяца
@@ -721,16 +717,28 @@ function openInputDialog(date, dayElement, valueElement) {
   activeDialog = inputDialog; // Устанавливаем текущее активное окно
 }
 
-// Функция для обновления счетчика отработанных дней
+// Функция для обновления счетчика отработанных дней и заработанных денег
 function updateWorkdayCounter(change) {
   const workdayCounterEl = document.getElementById("workday-counter");
-  let currentCount = parseInt(workdayCounterEl.textContent.replace("Отработано: ", "")) || 0;
-  workdayCounterEl.textContent = `${currentCount + change}`;
+  const earnedMoneyEl = document.getElementById("earned-money");
+
+  let currentCount = parseInt(workdayCounterEl.textContent) || 0;
+  currentCount += change;
+  workdayCounterEl.textContent = `${currentCount}`; 
+
+  // Обновляем заработанные деньги
+  const earnings = currentCount * 300;
+  earnedMoneyEl.textContent = earnings;
 }
 
 // Функция для обновления общего значения (value)
 function updateTotalValue(workdays = []) {
-  const totalValueEl = document.getElementById("total-value");
+  const totalValueEl = document.getElementById("value-total");
   const totalValue = workdays.reduce((sum, workday) => sum + (workday.value || 0), 0);
-  totalValueEl.textContent = `Общее количество значений: ${totalValue} шт.`;
+  totalValueEl.textContent = `${totalValue} шт.`;
 }
+
+// Автоматическое обновление страницы каждые 5 минут
+setInterval(() => {
+  location.reload(); // Перезагружает текущую страницу
+}, 5 * 60 * 1000); // 5 минут в миллисекундах
