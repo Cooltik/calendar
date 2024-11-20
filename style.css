@@ -107,7 +107,7 @@ body {
   /* Адаптивный дизайн */
   @media (max-width: 500px) {
     #calendar-container {
-      width: 95%;
+      width: auto;
     }
     .day {
       font-size: 1em;
